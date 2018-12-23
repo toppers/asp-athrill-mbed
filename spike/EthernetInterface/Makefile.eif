@@ -1,0 +1,17 @@
+C_OBJ := 
+
+CXX_OBJ += $(MBED_LIB_DIR)/EthernetInterface/EthernetInterface.o \
+	   $(MBED_LIB_DIR)/EthernetInterface/Socket/Endpoint.o \
+	   $(MBED_LIB_DIR)/EthernetInterface/Socket/Socket.o \
+	   $(MBED_LIB_DIR)/EthernetInterface/Socket/TCPSocketConnection.o \
+	   $(MBED_LIB_DIR)/EthernetInterface/Socket/TCPSocketServer.o \
+	   $(MBED_LIB_DIR)/EthernetInterface/Socket/UDPSocket.o
+
+INCLUDE_PATHS += -I$(MBED_LIB_DIR)/EthernetInterface \
+		 -I$(MBED_LIB_DIR)/EthernetInterface/Socket \
+  		 -I$(MBED_LIB_DIR)/EthernetInterface/lwip \
+ 		 -I$(MBED_LIB_DIR)/EthernetInterface/lwip/include \
+ 		 -I$(MBED_LIB_DIR)/EthernetInterface/lwip/include/ipv4 \
+  		 -I.
+
+CDEFS += -DTARGET_ATHRILL
