@@ -141,11 +141,17 @@ int lwip_listen(int s, int backlog)
 int lwip_recv(int s, void *mem, size_t len, int flags)
 {
 	sys_int32 err;
-	err = athrill_posix_recv(s, (sys_addr)mem, len, ATHRILL_POSIX_MSG_DONTWAIT);
-	if (err < 0) {
-		return -1;
-	}
-	return err;
+
+    do {
+        err = athrill_posix_recv(s, (sys_addr)mem, len, ATHRILL_POSIX_MSG_DONTWAIT);
+		if (err == SYS_API_ERR_AGAIN) {
+			//sleep 1msec
+			OS_DLY_TSK(1);
+            continue;
+		}
+    } while (err < 0);
+
+    return err;
 }
 
 int lwip_read(int s, void *mem, size_t len)
@@ -163,11 +169,16 @@ int lwip_send(int s, const void *dataptr, size_t size, int flags)
 {
 	sys_int32 err;
 
-	err = athrill_posix_send(s, (sys_addr)dataptr, size, ATHRILL_POSIX_MSG_DONTWAIT);
-	if (err < 0) {
-		return -1;
-	}
-    return 0;
+    do {
+        err = athrill_posix_send(s, (sys_addr)dataptr, size, ATHRILL_POSIX_MSG_DONTWAIT);
+		if (err == SYS_API_ERR_AGAIN) {
+			//sleep 1msec
+			OS_DLY_TSK(1);
+            continue;
+		}
+    } while (err < 0);
+
+    return err;
 }
 int lwip_sendto(int s, const void *dataptr, size_t size, int flags,
     const struct sockaddr *to, socklen_t tolen)
@@ -188,8 +199,8 @@ int lwip_write(int s, const void *dataptr, size_t size)
 int lwip_select(int maxfdp1, fd_set *readset, fd_set *writeset, fd_set *exceptset,
                 struct timeval *timeout)
 {
-    //TODO
-    return 0;
+    //not supported
+    return -1;
 }
 int lwip_ioctl(int s, long cmd, void *argp)
 {
