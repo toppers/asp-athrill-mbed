@@ -1,5 +1,7 @@
 include $(PRJROOT_ETHERIF)/Makefile.eif
 
+TARGET	:= sample
+
 CC		:= v850-elf-gcc
 CXX		:= v850-elf-g++
 LINK	:= v850-elf-gcc
@@ -15,10 +17,31 @@ IFLAGS	+= -I$(PRJROOT_ASP)/include
 IFLAGS	+= -I$(PRJROOT_ASP)/target/v850_gcc
 IFLAGS	+= -I$(PRJROOT_ASP)/arch
 IFLAGS	+= -I$(PRJROOT_ASP)/arch/v850_gcc
+IFLAGS	+= -I$(ATHRILL_ROOT)/trunk/apl/include
 
+CXX_OBJ += main.o
 
+C_OBJ	+= start.o
+C_OBJ	+= vector.o
+C_OBJ	+= software_init.o
+C_OBJ	+= interrupt.o
+C_OBJ	+= interrupt_table.o
+C_OBJ	+= timer.o
+C_OBJ	+= interrupt_asm.o
+
+OBJS	:= $(C_OBJ) $(CXX_OBJ)
+
+VPATH	:= .
 VPATH	:= $(PRJROOT_ETHERIF)
 VPATH	+= $(PRJROOT_ETHERIF)/Socket
+VPATH	+= $(PRJROOT_ETHERIF)/lwip-athrill
+VPATH	+= $(PRJROOT_SAMPLE)
+
+LDSCRIPT = ./v850esfk3.ld
+LDFLAGS	:= -nostdlib -T $(LDSCRIPT)
+
+LIBS := -lsupc++  -lstdc++  -lm -lc -lgcc
+
 
 %.o: %.S
 	$(CC) -c $(IFLAGS)  $(CDEFS) $(CFLAGS) $<
@@ -30,7 +53,7 @@ VPATH	+= $(PRJROOT_ETHERIF)/Socket
 	$(CXX) -c $(IFLAGS) $(CFLAGS) $(CDEFS) $(CXXFLAGS) $<
 
 all: $(CXX_OBJ) $(C_OBJ)
-
+	$(LINK) $(CFLAGS) $(LDFLAGS) -o $(TARGET) $(OBJS) -Wl,-Map,$(TARGET).map $(LIBS)
 
 clean:
 	rm -f *.o

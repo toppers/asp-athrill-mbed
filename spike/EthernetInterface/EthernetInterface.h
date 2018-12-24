@@ -24,9 +24,6 @@
 #error The Ethernet Interface library is not supported on this target
 #endif
 
-//#include "rtos.h"
-//#include "lwip/netif.h"
-
  /** Interface using Ethernet to connect to an IP-based network
  *
  */
