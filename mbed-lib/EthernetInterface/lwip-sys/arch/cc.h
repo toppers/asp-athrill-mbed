@@ -32,7 +32,7 @@
 #ifndef __CC_H__ 
 #define __CC_H__ 
 
-#include <stdint.h>
+//#include <stdint.h>
 #include <sys/time.h>
 
 /* Types based on stdint.h */
@@ -114,7 +114,7 @@ void assert_printf(char *msg, int line, char *file);
 #endif 
 
 #include "cmsis.h"
-#define LWIP_PLATFORM_HTONS(x)      __REV16(x)
-#define LWIP_PLATFORM_HTONL(x)      __REV(x)
+#define LWIP_PLATFORM_HTONS(x)      (x)
+#define LWIP_PLATFORM_HTONL(x)      (x)
 
 #endif /* __CC_H__ */ 
