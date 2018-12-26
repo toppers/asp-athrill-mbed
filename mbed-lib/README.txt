@@ -8,7 +8,7 @@
 ■参照リポジトリ
 　mROS(https://github.com/tlk-emb/mROS/tree/master/asp_mbed)からリンクされている以下のソースをベースにしています．
 
-ht　tps://github.com/tlk-emb/asp-gr_peach_gcc-mbed/tree/1493edee96e69cd69dd66e38c1d4b6f13474f34d
+  https://github.com/tlk-emb/asp-gr_peach_gcc-mbed/tree/1493edee96e69cd69dd66e38c1d4b6f13474f34d
 
 ■変更概要
 　①ビルド環境
