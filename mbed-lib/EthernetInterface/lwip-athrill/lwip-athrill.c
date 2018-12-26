@@ -96,7 +96,7 @@ int lwip_close(int s)
 int lwip_connect(int s, const struct sockaddr *name, socklen_t namelen)
 {
 	sys_int32 err;
-	int tmp = SYS_API_ERR_INPROGRESS;
+
 	if (name->sa_family == PF_INET) {
 		struct sys_sockaddr_in sockaddr;
 		struct sockaddr_in *addr_in = (struct sockaddr_in*)name;
