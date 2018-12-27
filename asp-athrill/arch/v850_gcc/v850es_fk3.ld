@@ -45,9 +45,10 @@ OUTPUT_ARCH(v850-rh850)
 
 MEMORY
 {
-	INTROM(raxi) : org = 0x00000000, len = 4096k
-	INTRAM(wax)  : org = 0x03FF7000, len = 4096k
-	ADEV(wax)    : org = 0xDEAD0000, len = 1k
+	INTROM(raxi) : org = 0x00000000, len = 1024k
+	INTRAM(wax)  : org = 0x06FF7000, len = 8192k
+	INTMMAP(wax)  : org = 0x07FF0000, len = 512k
+	ADEV(wax)  : org = 0xDEAD0000, len = 1k
 };
 
 PROVIDE(__stack = 0);
@@ -62,6 +63,10 @@ SECTIONS
 	{
 		*(.vectors)
 	} > INTROM
+    .init :
+    {
+        KEEP (*(.init))
+    }
 
 	.text :
 	{
@@ -69,6 +74,38 @@ SECTIONS
 		*(.text)
 		_etext = . ;
 	} > INTROM
+	.rodata : { 
+		*(.rodata) 
+	} > INTROM
+	.rosdata : { 
+		*(.rosdata) 
+	} > INTROM
+    .fini :
+    {
+        KEEP (*(.fini))
+    }
+    _etext = . ;
+    PROVIDE (etext = .) ;
+    .gcc_except_table : { *(.gcc_except_table) }
+    .ctors :
+    {
+        KEEP (*crtbegin.o(.ctors))
+        KEEP (*(EXCLUDE_FILE (*crtend.o ) .ctors))
+        KEEP (*(SORT(.ctors.*)))
+        KEEP (*(.ctors))
+    } > INTROM
+	___ctors_end = .;
+	___dtors = .;
+    .dtors :
+    {
+        KEEP (*crtbegin.o(.dtors))
+        KEEP (*(EXCLUDE_FILE (*crtend.o ) .dtors))
+        KEEP (*(SORT(.dtors.*)))
+        KEEP (*(.dtors))
+    } > INTROM
+	___dtors_end = .;
+
+	. = ALIGN(4);
 
 	.call_table_data ALIGN (4) :
 	{
@@ -82,7 +119,6 @@ SECTIONS
 	} > INTROM
 
 	. = ALIGN(4);
-	.rodata : { *(.rodata) } > INTROM
 
 	_textend = .;
 
