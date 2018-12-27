@@ -269,3 +269,35 @@ int raise(int sig)
 {
 	return 0;
 }
+
+//TODO
+// need to delete following files from lib.a
+// lib_a-exit.o lib_a-__atexit.o lib_a-__call_atexit.o lib_a-fflush.o lib_a-findfp.o lib_a-refill.o
+void exit(int status)
+{
+}
+
+void __register_exitproc(void)
+{
+
+}
+void __sinit(void)
+{
+
+}
+void __srefill_r(void)
+{
+
+}
+void _fflush_r(void)
+{
+
+}
+void _cleanup_r(void)
+{
+
+}
+void fflush(void)
+{
+
+}
