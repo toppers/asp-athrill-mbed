@@ -6,11 +6,7 @@
 
 #define FALSE	0
 #define TRUE	1
-#if 1
-#define OS_DLY_TSK(arg)
-#else
 #define OS_DLY_TSK(arg)	dly_tsk(arg)
-#endif
 
 void lwip_socket_init(void)
 {
