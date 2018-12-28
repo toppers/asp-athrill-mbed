@@ -18,6 +18,12 @@
 #include "TCPSocketConnection.h"
 #include <cstring>
 
+#include <kernel.h>
+#include <t_syslog.h>
+#include <t_stdlib.h>
+#include "syssvc/serial.h"
+#include "syssvc/syslog.h"
+
 using std::memset;
 using std::memcpy;
 
@@ -29,6 +35,7 @@ int TCPSocketConnection::connect(const char* host, const int port) {
     if (init_socket(SOCK_STREAM) < 0)
         return -1;
     
+    //syslog(LOG_NOTICE, "TCPSocketConnection connect ip=%s port=%u", host, port);
     if (set_address(host, port) != 0)
         return -1;
     

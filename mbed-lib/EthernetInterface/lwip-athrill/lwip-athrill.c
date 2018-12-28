@@ -4,9 +4,15 @@
 #include "athrill_syscall.h"
 #include "kernel.h"
 
+#include <t_syslog.h>
+#include <t_stdlib.h>
+#include "syssvc/serial.h"
+#include "syssvc/syslog.h"
+
 #define FALSE	0
 #define TRUE	1
 #define OS_DLY_TSK(arg)	dly_tsk(arg)
+//#define OS_DLY_TSK(arg)	
 
 void lwip_socket_init(void)
 {
@@ -101,6 +107,8 @@ int lwip_connect(int s, const struct sockaddr *name, socklen_t namelen)
 		sockaddr.sin_addr = addr_in->sin_addr.s_addr;
 		sockaddr.sin_port = addr_in->sin_port;
 		bool_t is_connected = 0;
+
+	    syslog(LOG_NOTICE, "lwip_connect connect ip=%x port=%u", addr_in->sin_addr.s_addr, addr_in->sin_port);
 
 		err = athrill_posix_connect(s, &sockaddr, sizeof(sockaddr));
 		if (err != SYS_API_ERR_INPROGRESS) {
