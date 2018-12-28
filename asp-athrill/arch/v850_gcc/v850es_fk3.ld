@@ -146,6 +146,13 @@ SECTIONS
 	  __bss_end = .;
 	} > INTRAM
 
+	.bss_noclr		:
+	{
+		. = ALIGN(4);
+		*(.bss_noclr)
+		. = ALIGN(4);
+	} > INTRAM
+
 	.sdata ALIGN (4) :
 	{
 		PROVIDE (__gp = . + 0x8000);

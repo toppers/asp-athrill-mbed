@@ -217,7 +217,7 @@ $ 	// stkszがスタック領域のサイズとして正しくない場合（E_PAR）
 	$END$
 
 	$IF EQ(TSK.STK[tskid],"NULL")$
-		static STK_T _kernel_stack_$tskid$[COUNT_STK_T($TSK.STKSZ[tskid]$)];$NL$
+		static STK_T _kernel_stack_$tskid$[COUNT_STK_T($TSK.STKSZ[tskid]$)]  __attribute__ ((section(".bss_noclr")));$NL$
 		$TSK.TINIB_STKSZ[tskid] = FORMAT("ROUND_STK_T(%1%)", TSK.STKSZ[tskid])$
 		$TSK.TINIB_STK[tskid] = CONCAT("_kernel_stack_", tskid)$
 	$ELSE$
@@ -949,7 +949,7 @@ $	// DEF_ICSがない場合のデフォルト値の設定
 	$NL$
 	#else /* DEAULT_ISTK */$NL$
 	$NL$
-	static STK_T				_kernel_istack[COUNT_STK_T(DEFAULT_ISTKSZ)];$NL$
+	static STK_T				_kernel_istack[COUNT_STK_T(DEFAULT_ISTKSZ)]  __attribute__ ((section(".bss_noclr")));$NL$
 	#define TOPPERS_ISTKSZ		ROUND_STK_T(DEFAULT_ISTKSZ)$NL$
 	#define TOPPERS_ISTK		_kernel_istack$NL$
 	$NL$
@@ -975,7 +975,7 @@ $ 	// istkszがスタック領域のサイズとして正しくない場合（E_PAR）
 
 	$IF EQ(ICS.ISTK[1], "NULL")$
 $		// スタック領域の自動割付け
-		static STK_T				_kernel_istack[COUNT_STK_T($ICS.ISTKSZ[1]$)];$NL$
+		static STK_T				_kernel_istack[COUNT_STK_T($ICS.ISTKSZ[1]$)]  __attribute__ ((section(".bss_noclr")));$NL$
 		#define TOPPERS_ISTKSZ		ROUND_STK_T($ICS.ISTKSZ[1]$)$NL$
 		#define TOPPERS_ISTK		_kernel_istack$NL$
 	$ELSE$
