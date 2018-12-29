@@ -17,6 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "EthernetInterface.h"
+#include <string.h>
 
 static char mac_addr[19];
 static char ip_addr[17] = "\0";
@@ -28,7 +29,7 @@ int EthernetInterface::init() {
 }
 
 int EthernetInterface::init(const char* ip, const char* mask, const char* gateway) {
-    /* not supported */
+    memcpy(ip_addr, ip, strlen(ip));
     return -1;
 }
 
