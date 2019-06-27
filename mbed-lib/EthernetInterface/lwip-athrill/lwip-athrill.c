@@ -14,6 +14,11 @@
 #define OS_DLY_TSK(arg)	dly_tsk(arg)
 //#define OS_DLY_TSK(arg)	
 
+void lwip_init(void)
+{
+	lwip_socket_init();
+}
+
 void lwip_socket_init(void)
 {
 	//nothing to do
