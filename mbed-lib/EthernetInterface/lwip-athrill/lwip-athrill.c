@@ -50,8 +50,8 @@ int lwip_accept(int s, struct sockaddr *addr, socklen_t *addrlen)
 
 int lwip_bind(int s, const struct sockaddr *name, socklen_t namelen)
 {
+	sys_int32 err;
 	if (name->sa_family == PF_INET) {
-		sys_int32 err;
 		struct sys_sockaddr_in sockaddr;
 		struct sockaddr_in *addr_in = (struct sockaddr_in*)name;
 
