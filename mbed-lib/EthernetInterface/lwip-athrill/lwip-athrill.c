@@ -1,4 +1,5 @@
 #include "lwip/sockets.h"
+#include "lwip/netdb.h"
 #include <string.h>
 #include <stdlib.h>
 #include "athrill_syscall.h"
@@ -227,8 +228,17 @@ int lwip_fcntl(int s, int cmd, int val)
 }
 struct hostent *lwip_gethostbyname(const char *name)
 {
-    //not supported
-    return NULL;
+	//TODO
+	static struct hostent hent;
+	static char *haddr_list[1];
+	static unsigned int ipaddr[1];
+
+	ipaddr[0] = 0;
+
+	haddr_list[0] = (char*)&ipaddr;
+	hent.h_addr_list = haddr_list;
+
+	return &hent;
 }
 char *ipaddr_ntoa_r(const ip_addr_t *addr, char *buf, int buflen)
 {
