@@ -256,17 +256,32 @@ int lwip_select(int maxfdp1, fd_set *readset, fd_set *writeset, fd_set *exceptse
 	sys_int32 count = (timeout->tv_sec * 1000) + (timeout->tv_usec / 1000);
 	sys_int32 ret;
 	sys_int32 i;
-	fd_set org_readset = *readset;
-	fd_set org_writeset = *writeset;
-	fd_set org_exceptset = *exceptset;
+	fd_set org_readset;
+	fd_set org_writeset;
+	fd_set org_exceptset;
+	FD_ZERO(&org_readset);
+	FD_ZERO(&org_writeset);
+	FD_ZERO(&org_exceptset);
+
 
 	for (i = 0; i < count; i++) {
+		if (readset != NULL) {
+			org_readset = *readset;
+		}
+		if (writeset != NULL) {
+			org_writeset = *writeset;
+		}
+		if (exceptset != NULL) {
+			org_exceptset = *exceptset;
+		}
 		ret = athrill_lwip_select(maxfdp1, &org_readset, &org_writeset, &org_exceptset);
-		if (ret >= 0) {
+		if (ret == 0) {
+			//sleep 1msec
+			OS_DLY_TSK(1);
+		}
+		else {
 			return ret;
 		}
-		//sleep 1msec
-		OS_DLY_TSK(1);
 	}
 	return ret;
 }
