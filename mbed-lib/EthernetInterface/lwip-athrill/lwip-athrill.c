@@ -210,11 +210,65 @@ int lwip_write(int s, const void *dataptr, size_t size)
     //not supported
     return -1;
 }
+
+static void fd_set_copy(unsigned char *dst, unsigned char *src)
+{
+    sys_int32 i;
+    sys_int32 fd_size = sizeof(fd_set);
+    sys_int32 num = (fd_size < ATHRILL_FD_SETSIZE) ? fd_size: ATHRILL_FD_SETSIZE;
+
+    for (i = 0; i < num; i++) {
+        dst[i] = src[i];
+    }
+    return;
+}
+static int athrill_lwip_select(int maxfdp1, fd_set *readset, fd_set *writeset, fd_set *exceptset)
+{
+	sys_int32 ret;
+	sys_fd_set sys_readfdset;
+	sys_fd_set sys_writefdset;
+	sys_fd_set sys_exceptfdset;
+
+	memset((void*)&sys_readfdset, 0, sizeof(sys_fd_set));
+	memset((void*)&sys_writefdset, 0, sizeof(sys_fd_set));
+	memset((void*)&sys_exceptfdset, 0, sizeof(sys_fd_set));
+	fd_set_copy((unsigned char*)&sys_readfdset, (unsigned char*)readset);
+	fd_set_copy((unsigned char*)&sys_writefdset, (unsigned char*)writeset);
+	fd_set_copy((unsigned char*)&sys_exceptfdset, (unsigned char*)exceptset);
+
+
+	ret = athrill_posix_select(maxfdp1, &sys_readfdset, &sys_writefdset, &sys_exceptfdset);
+	if (ret < 0) {
+		return ret;
+	}
+	FD_ZERO(readset);
+	FD_ZERO(writeset);
+	FD_ZERO(exceptset);
+	fd_set_copy((unsigned char*)readset, (unsigned char*)&sys_readfdset);
+	fd_set_copy((unsigned char*)writeset, (unsigned char*)&sys_writefdset);
+	fd_set_copy((unsigned char*)exceptset, (unsigned char*)&sys_exceptfdset);
+
+    return ret;
+}
 int lwip_select(int maxfdp1, fd_set *readset, fd_set *writeset, fd_set *exceptset,
                 struct timeval *timeout)
 {
-    //not supported
-    return -1;
+	sys_int32 count = (timeout->tv_sec * 1000) + (timeout->tv_usec / 1000);
+	sys_int32 ret;
+	sys_int32 i;
+	fd_set org_readset = *readset;
+	fd_set org_writeset = *writeset;
+	fd_set org_exceptset = *exceptset;
+
+	for (i = 0; i < count; i++) {
+		ret = athrill_lwip_select(maxfdp1, &org_readset, &org_writeset, &org_exceptset);
+		if (ret >= 0) {
+			return ret;
+		}
+		//sleep 1msec
+		OS_DLY_TSK(1);
+	}
+	return ret;
 }
 int lwip_ioctl(int s, long cmd, void *argp)
 {
