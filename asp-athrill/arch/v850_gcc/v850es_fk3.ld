@@ -72,10 +72,12 @@ SECTIONS
 	{
 		__text = . ;
 		*(.text)
+		*(.text.*)
 		_etext = . ;
 	} > INTROM
 	.rodata : { 
 		*(.rodata) 
+		*(.rodata.*) 
 	} > INTROM
 	.rosdata : { 
 		*(.rosdata) 
@@ -130,17 +132,25 @@ SECTIONS
 		. = ALIGN(4);
 		__data_start = . ;
 		*(.data)
+		*(.data.*)
 		. = ALIGN(4);
 		_edata	=  . ;
 	} > INTRAM
 
 	__idata_end = __idata_start + SIZEOF(.data);
 
+	.sdata ALIGN (4) :
+	{
+		PROVIDE (__gp = . + 0x8000);
+		*(.sdata)
+	} > INTRAM
+
 	.bss	   :
 	{
 	  . = ALIGN(4);
 	  __bss_start = .;
 	  *(.bss)
+	  *(.bss.*)
 	  *(COMMON)
 	  . = ALIGN(4);
 	  __bss_end = .;
@@ -153,11 +163,6 @@ SECTIONS
 		. = ALIGN(4);
 	} > INTRAM
 
-	.sdata ALIGN (4) :
-	{
-		PROVIDE (__gp = . + 0x8000);
-		*(.sdata)
-	} > INTRAM
 
 	.tdata ALIGN (4) :
 	{
