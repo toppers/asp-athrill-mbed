@@ -190,7 +190,8 @@ int lwip_send(int s, const void *dataptr, size_t size, int flags)
 			OS_DLY_TSK(1);
             continue;
 		}
-    } while (err < 0);
+		break;
+    } while (1);
 
     return err;
 }
