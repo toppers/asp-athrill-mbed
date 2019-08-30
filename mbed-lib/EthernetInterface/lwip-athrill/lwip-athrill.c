@@ -264,6 +264,9 @@ int lwip_select(int maxfdp1, fd_set *readset, fd_set *writeset, fd_set *exceptse
 	FD_ZERO(&org_writeset);
 	FD_ZERO(&org_exceptset);
 
+	if (count == 0) {
+		count = 1;
+	}
 
 	for (i = 0; i < count; i++) {
 		if (readset != NULL) {
