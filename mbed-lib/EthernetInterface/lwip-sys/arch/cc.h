@@ -114,7 +114,19 @@ void assert_printf(char *msg, int line, char *file);
 #endif 
 
 #include "cmsis.h"
+#if 0 /* bug fix */
 #define LWIP_PLATFORM_HTONS(x)      (x)
 #define LWIP_PLATFORM_HTONL(x)      (x)
+#else
+static inline short LWIP_PLATFORM_HTONS(short x)
+{
+	short y = x;
+	char *p_src = (char*)&x;
+	char *p_dst = (char*)&y;
+	p_dst[0] = p_src[1];
+	p_dst[1] = p_src[0];
+	return y;
+}
+#endif
 
 #endif /* __CC_H__ */ 
