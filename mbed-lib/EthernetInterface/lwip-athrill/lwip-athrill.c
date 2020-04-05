@@ -32,7 +32,7 @@ int lwip_accept(int s, struct sockaddr *addr, socklen_t *addrlen)
 	struct sys_sockaddr_in client_sockaddr;
 
 	do {
-		client_sockfd = athrill_posix_accept(s, &client_sockaddr, addrlen);
+		client_sockfd = athrill_posix_accept(s, &client_sockaddr, (sys_uint32 *)addrlen);
 		if (client_sockfd != SYS_API_ERR_AGAIN) {
 			break;
 		}
@@ -114,7 +114,7 @@ int lwip_connect(int s, const struct sockaddr *name, socklen_t namelen)
 		sockaddr.sin_port = addr_in->sin_port;
 		bool_t is_connected = 0;
 
-	    syslog(LOG_NOTICE, "lwip_connect connect ip=%x port=%u", addr_in->sin_addr.s_addr, addr_in->sin_port);
+	    syslog(LOG_NOTICE, "lwip_connect connect ip=%x port=%x", addr_in->sin_addr.s_addr, addr_in->sin_port);
 
 		err = athrill_posix_connect(s, &sockaddr, sizeof(sockaddr));
 		if (err != SYS_API_ERR_INPROGRESS) {
@@ -361,7 +361,8 @@ int raise(int sig)
 {
 	return 0;
 }
-
+#ifndef __TARGET_ARCH_ARM
+#ifndef TOPPERS_RZA1H
 //TODO
 // need to delete following files from lib.a
 // lib_a-exit.o lib_a-__atexit.o lib_a-__call_atexit.o lib_a-fflush.o lib_a-findfp.o lib_a-refill.o
@@ -393,3 +394,10 @@ void fflush(void)
 {
 
 }
+#endif
+#else /* __TARGET_ARCH_ARM */
+void _exit(int status)
+{
+}
+
+#endif /* __TARGET_ARCH_ARM */
