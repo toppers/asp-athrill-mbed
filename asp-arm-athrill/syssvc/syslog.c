@@ -162,10 +162,10 @@ syslog_wri_log(uint_t prio, const SYSLOG *p_syslog)
 	/*
 	 *  低レベル出力
 	 */
-	if (((~syslog_lowmask_not) & LOG_MASK(prio)) != 0U) {
+	//if (((~syslog_lowmask_not) & LOG_MASK(prio)) != 0U) {
 		syslog_print(p_syslog, target_fput_log);
 		target_fput_log('\n');
-	}
+	//}
 
 	SIL_UNL_INT();
 	LOG_SYSLOG_WRI_LOG_LEAVE(E_OK);

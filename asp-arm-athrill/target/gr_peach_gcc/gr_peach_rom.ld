@@ -14,6 +14,7 @@ MEMORY
   BOOT_LOADER (rx) : ORIGIN = 0x18000000, LENGTH = 0x00004000 
   FLASH (rx) : ORIGIN = 0x18004000, LENGTH = 0x07FFC000 
   SRAM (xrw)    : ORIGIN = 0x20000000, LENGTH = 10M
+  ADEV(wax)  : org = 0xDEAD0000, len = 1k
 }
 
 
@@ -92,6 +93,12 @@ SECTIONS
      _end = .		;
     __bss_end = .;
     PROVIDE (end = .)	;
+	.athrill_device_section	: 
+	{
+		. = ALIGN(4);
+		*(.athrill_device_section)
+		. = ALIGN(4);
+	} > ADEV
     .comment 0 : { *(.comment) }
 
   /* DWARF debug sections.
