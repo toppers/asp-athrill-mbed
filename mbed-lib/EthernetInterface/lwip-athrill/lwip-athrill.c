@@ -400,4 +400,23 @@ void _exit(int status)
 {
 }
 
+#if ATHRILL_BUILD_TARGET == ubuntu18
+int _write(int fd, const void *buf, int count)
+{
+	return 0;
+}
+int _close(int fd)
+{
+	return 0;
+}
+int _read(int fd, void *buf, int count)
+{
+	return 0;
+}
+int _lseek(int fd, int offset, int whence)
+{
+	return 0;
+}
+#endif
+
 #endif /* __TARGET_ARCH_ARM */
