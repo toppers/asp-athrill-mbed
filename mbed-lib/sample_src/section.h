@@ -11,12 +11,15 @@ extern unsigned char _bss_end;
  * RAM IDATA
  */
 extern unsigned char _data_start;
+extern unsigned char _sdata_start;
 
 /*
  * ROM IDATA
  */
 extern unsigned char _idata_start;
 extern unsigned char _idata_end;
+extern unsigned char _srdata_start;
+extern unsigned char _srdata_end;
 extern unsigned char _ctors_start;
 extern unsigned char _ctors_end;
 

@@ -76,6 +76,7 @@ extern "C" {
 
 #ifdef LWIP_PROVIDE_ERRNO
 
+#if 0
 #define  EPERM         1  /* Operation not permitted */
 #define  ENOENT        2  /* No such file or directory */
 #define  ESRCH         3  /* No such process */
@@ -224,6 +225,8 @@ extern "C" {
 #define ENSRDESTRUCTION         175 /* Application terminated lookup */
 #define ENSRQUERYDOMAINTOOLONG  176 /* Domain name is too long */
 #define ENSRCNAMELOOP           177 /* Domain name is too long */
+
+#endif
 
 #ifndef errno
 extern int errno;

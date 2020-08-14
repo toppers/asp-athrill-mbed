@@ -10,8 +10,10 @@
 #include "syssvc/serial.h"
 #include "syssvc/syslog.h"
 
+#if 0
 #define FALSE	0
 #define TRUE	1
+#endif
 #define OS_DLY_TSK(arg)	dly_tsk(arg)
 //#define OS_DLY_TSK(arg)	
 
