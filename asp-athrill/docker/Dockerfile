@@ -89,12 +89,13 @@ RUN  bash build.bash cpp clean && \
 
 WORKDIR /root/athrill-target-v850e2m/build_linux
 RUN make clean && \
-    make timer32=true serial_fifo_enable=true vdev_disable=true skip_clock_bugfix=true supress_detect_error=true reuse_port=true
+    make timer32=false serial_fifo_enable=true vdev_disable=true skip_clock_bugfix=true supress_detect_error=true reuse_port=true
 WORKDIR /root/athrill-device/device/hakoniwa
 WORKDIR /root/athrill-device/device/hakoniwa/build
 RUN  bash build.bash
 
 RUN echo 'export PATH=/root/athrill/bin/linux:${PATH}' >> ~/.bashrc
+RUN echo 'export PATH=/root/workspace/bin:${PATH}' >> ~/.bashrc
 RUN echo 'export PATH=/root/hakoniwa-core/impl/asset/client/build/cpp:${PATH}' >> ~/.bashrc
 RUN mkdir workspace
 

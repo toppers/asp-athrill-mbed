@@ -1,0 +1,5 @@
+#!/bin/bash
+
+RESOLVE_IPADDR=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'`
+
+hakoniwa_command ${RESOLVE_IPADDR} 50051 $*

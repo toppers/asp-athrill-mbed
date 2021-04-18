@@ -1,0 +1,3 @@
+#!/bin/bash
+
+hkw-cmd reset
