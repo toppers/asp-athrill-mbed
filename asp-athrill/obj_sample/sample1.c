@@ -33,7 +33,7 @@ void main_task(intptr_t exinf)
 	syslog(LOG_NOTICE, "Sample program starts (exinf = %d).", (int_t) exinf);
 	while (1) {
 		syslog(LOG_NOTICE, "cnt=%d", cnt++);
-		dly_tsk(100);
+		dly_tsk(300);
 
 	}
 
