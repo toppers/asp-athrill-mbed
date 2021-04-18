@@ -20,7 +20,7 @@ libkernel.a(sys_manage.o)     sample1.o (_rot_rdq)
 libkernel.a(interrupt.o)      kernel_cfg.o (__kernel_initialize_interrupt)
 libkernel.a(exception.o)      sample1.o (_xsns_dpn)
 libkernel.a(wait.o)           libkernel.a(task_sync.o) (__kernel_make_wait_tmout)
-/usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
+/mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
                               syslog.o (_memcpy)
 
 Allocating common symbols
@@ -82,15 +82,16 @@ _kernel_reqflg      0x4               libkernel.a(task.o)
 Memory Configuration
 
 Name             Origin             Length             Attributes
-INTROM           0x0000000000000000 0x0000000000400000 axrl
-INTRAM           0x0000000003ff7000 0x0000000000400000 axw
+INTROM           0x0000000000000000 0x0000000000100000 axrl
+INTRAM           0x0000000006ff7000 0x0000000000800000 axw
+INTMMAP          0x0000000007ff0000 0x0000000000080000 axw
 ADEV             0x00000000dead0000 0x0000000000000400 axw
 *default*        0x0000000000000000 0xffffffffffffffff
 
 Linker script and memory map
 
-LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
-LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a
+LOAD /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
+LOAD /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a
 LOAD start.o
 LOAD sample1.o
 LOAD log_output.o
@@ -104,12 +105,12 @@ LOAD logtask.o
 LOAD kernel_cfg.o
 LOAD kernel_cfg_asm.o
 LOAD libkernel.a
-LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
+LOAD /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
 START GROUP
-LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a
-LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
+LOAD /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a
+LOAD /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
 END GROUP
-LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
+LOAD /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
                 0x0000000000000000                PROVIDE (__stack, 0x0)
                 0x0000000000000000                PROVIDE (software_init_hook, 0x0)
                 0x0000000000000000                PROVIDE (_software_term_hook, 0x0)
@@ -124,7 +125,10 @@ LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
                 0x0000000000000820                __kernel__kernel_inthdr_44_44
                 0x000000000000084e                __kernel__kernel_inthdr_45_45
 
-.text           0x00000000000008c0     0x7e58
+.init
+ *(.init)
+
+.text           0x00000000000008c0     0x7e8c
                 0x00000000000008c0                __text = .
  *(.text)
  .text          0x00000000000008c0       0xa0 start.o
@@ -329,22 +333,12 @@ LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
                 0x00000000000084e8                __kernel_wobj_make_wait
                 0x000000000000857a                __kernel_wobj_make_wait_tmout
                 0x0000000000008608                __kernel_init_wait_queue
- .text          0x00000000000086fe       0x1a /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
+ .text          0x00000000000086fe       0x1a /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
                 0x00000000000086fe                _memcpy
-                0x0000000000008718                _etext = .
-
-.text.unlikely  0x0000000000008718       0x34
+ *(.text.*)
  .text.unlikely
                 0x0000000000008718       0x34 libkernel.a(semaphore.o)
-
-.call_table_data
-                0x000000000000874c        0x0
-                0x000000000000874c                PROVIDE (__ctbp, .)
- *(.call_table_data)
-
-.call_table_text
- *(.call_table_text)
-                0x000000000000874c                . = ALIGN (0x4)
+                0x000000000000874c                _etext = .
 
 .rodata         0x000000000000874c      0xf93
  *(.rodata)
@@ -387,143 +381,188 @@ LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
  .rodata        0x00000000000095e1       0x37 libkernel.a(time_event.o)
  .rodata        0x0000000000009618       0x49 libkernel.a(semaphore.o)
  .rodata        0x0000000000009661       0x7e libkernel.a(wait.o)
-                0x00000000000096df                _textend = .
+ *(.rodata.*)
+
+.rosdata
+ *(.rosdata)
+
+.fini
+ *(.fini)
+                0x00000000000096df                _etext = .
+                0x00000000000096df                PROVIDE (etext, .)
+
+.gcc_except_table
+ *(.gcc_except_table)
+
+.ctors
+ *crtbegin.o(.ctors)
+ *(EXCLUDE_FILE(*crtend.o) .ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+                0x00000000000096df                ___ctors_end = .
+                0x00000000000096df                ___dtors = .
+
+.dtors
+ *crtbegin.o(.dtors)
+ *(EXCLUDE_FILE(*crtend.o) .dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+                0x00000000000096df                ___dtors_end = .
+                0x00000000000096e0                . = ALIGN (0x4)
+
+.call_table_data
+                0x00000000000096e0        0x0
+                0x00000000000096e0                PROVIDE (__ctbp, .)
+ *(.call_table_data)
+
+.call_table_text
+ *(.call_table_text)
+                0x00000000000096e0                . = ALIGN (0x4)
+                0x00000000000096e0                _textend = .
                 0x00000000000096e0                . = ALIGN (0x4)
                 0x00000000000096e0                __idata_start = .
 
-.data           0x0000000003ff7000        0x0 load address 0x00000000000096e0
-                0x0000000003ff7000                . = ALIGN (0x4)
-                0x0000000003ff7000                __data_start = .
+.data           0x0000000006ff7000        0x0 load address 0x00000000000096e0
+                0x0000000006ff7000                . = ALIGN (0x4)
+                0x0000000006ff7000                __data_start = .
  *(.data)
- .data          0x0000000003ff7000        0x0 start.o
- .data          0x0000000003ff7000        0x0 sample1.o
- .data          0x0000000003ff7000        0x0 log_output.o
- .data          0x0000000003ff7000        0x0 vasyslog.o
- .data          0x0000000003ff7000        0x0 t_perror.o
- .data          0x0000000003ff7000        0x0 strerror.o
- .data          0x0000000003ff7000        0x0 banner.o
- .data          0x0000000003ff7000        0x0 syslog.o
- .data          0x0000000003ff7000        0x0 serial.o
- .data          0x0000000003ff7000        0x0 logtask.o
- .data          0x0000000003ff7000        0x0 kernel_cfg.o
- .data          0x0000000003ff7000        0x0 kernel_cfg_asm.o
- .data          0x0000000003ff7000        0x0 libkernel.a(v850es_fk3.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(prc_support.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(target_config.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(target_timer.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(target_serial.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(prc_config.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(startup.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(task.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(time_event.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(task_manage.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(task_sync.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(task_except.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(semaphore.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(time_manage.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(cyclic.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(alarm.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(sys_manage.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(interrupt.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(exception.o)
- .data          0x0000000003ff7000        0x0 libkernel.a(wait.o)
- .data          0x0000000003ff7000        0x0 /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
-                0x0000000003ff7000                . = ALIGN (0x4)
-                0x0000000003ff7000                _edata = .
+ .data          0x0000000006ff7000        0x0 start.o
+ .data          0x0000000006ff7000        0x0 sample1.o
+ .data          0x0000000006ff7000        0x0 log_output.o
+ .data          0x0000000006ff7000        0x0 vasyslog.o
+ .data          0x0000000006ff7000        0x0 t_perror.o
+ .data          0x0000000006ff7000        0x0 strerror.o
+ .data          0x0000000006ff7000        0x0 banner.o
+ .data          0x0000000006ff7000        0x0 syslog.o
+ .data          0x0000000006ff7000        0x0 serial.o
+ .data          0x0000000006ff7000        0x0 logtask.o
+ .data          0x0000000006ff7000        0x0 kernel_cfg.o
+ .data          0x0000000006ff7000        0x0 kernel_cfg_asm.o
+ .data          0x0000000006ff7000        0x0 libkernel.a(v850es_fk3.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(prc_support.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(target_config.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(target_timer.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(target_serial.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(prc_config.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(startup.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(task.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(time_event.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(task_manage.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(task_sync.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(task_except.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(semaphore.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(time_manage.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(cyclic.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(alarm.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(sys_manage.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(interrupt.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(exception.o)
+ .data          0x0000000006ff7000        0x0 libkernel.a(wait.o)
+ .data          0x0000000006ff7000        0x0 /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
+ *(.data.*)
+                0x0000000006ff7000                . = ALIGN (0x4)
+                0x0000000006ff7000                _edata = .
                 0x00000000000096e0                __idata_end = (__idata_start + SIZEOF (.data))
 
-.bss            0x0000000003ff7000     0x3d5c load address 0x00000000000096e0
-                0x0000000003ff7000                . = ALIGN (0x4)
-                0x0000000003ff7000                __bss_start = .
- *(.bss)
- .bss           0x0000000003ff7000        0x0 start.o
- .bss           0x0000000003ff7000        0x0 sample1.o
- .bss           0x0000000003ff7000        0x0 log_output.o
- .bss           0x0000000003ff7000        0x0 vasyslog.o
- .bss           0x0000000003ff7000        0x0 t_perror.o
- .bss           0x0000000003ff7000        0x0 strerror.o
- .bss           0x0000000003ff7000        0x0 banner.o
- .bss           0x0000000003ff7000      0x418 syslog.o
- .bss           0x0000000003ff7418      0x9c0 serial.o
- .bss           0x0000000003ff7dd8        0x4 logtask.o
- .bss           0x0000000003ff7ddc     0x2c00 kernel_cfg.o
- .bss           0x0000000003ffa9dc        0x0 kernel_cfg_asm.o
- .bss           0x0000000003ffa9dc        0x0 libkernel.a(v850es_fk3.o)
- .bss           0x0000000003ffa9dc        0x0 libkernel.a(prc_support.o)
- .bss           0x0000000003ffa9dc        0x0 libkernel.a(target_config.o)
- .bss           0x0000000003ffa9dc        0x0 libkernel.a(target_timer.o)
- .bss           0x0000000003ffa9dc        0x0 libkernel.a(target_serial.o)
- .bss           0x0000000003ffa9dc       0x75 libkernel.a(prc_config.o)
- *fill*         0x0000000003ffaa51        0x3 
- .bss           0x0000000003ffaa54        0x4 libkernel.a(startup.o)
-                0x0000000003ffaa54                __kernel_kerflg
- .bss           0x0000000003ffaa58        0x0 libkernel.a(task.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(time_event.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(task_manage.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(task_sync.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(task_except.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(semaphore.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(time_manage.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(cyclic.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(alarm.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(sys_manage.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(interrupt.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(exception.o)
- .bss           0x0000000003ffaa58        0x0 libkernel.a(wait.o)
- .bss           0x0000000003ffaa58        0x0 /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
- *(COMMON)
- COMMON         0x0000000003ffaa58        0xc sample1.o
-                0x0000000003ffaa58                _task_loop
-                0x0000000003ffaa5c                _message
-                0x0000000003ffaa60                _tex_loop
- COMMON         0x0000000003ffaa64      0x184 kernel_cfg.o
-                0x0000000003ffaa64                __kernel_tmevt_heap
-                0x0000000003ffaa9c                __kernel_pdqcb_table
-                0x0000000003ffaa9c                __kernel_dtqcb_table
-                0x0000000003ffaa9c                __kernel_almcb_table
-                0x0000000003ffaab0                __kernel_dtqinib_table
-                0x0000000003ffaab0                __kernel_flginib_table
-                0x0000000003ffaab0                __kernel_pdqinib_table
-                0x0000000003ffaab0                __kernel_cyccb_table
-                0x0000000003ffaac8                __kernel_mpfcb_table
-                0x0000000003ffaac8                __kernel_semcb_table
-                0x0000000003ffab48                __kernel_mbxinib_table
-                0x0000000003ffab48                __kernel_mbxcb_table
-                0x0000000003ffab48                __kernel_mpfinib_table
-                0x0000000003ffab48                __kernel_tcb_table
-                0x0000000003ffabe8                __kernel_flgcb_table
- COMMON         0x0000000003ffabe8       0xa0 libkernel.a(target_serial.o)
-                0x0000000003ffabe8                _siopcb_table
- COMMON         0x0000000003ffac88       0x27 libkernel.a(prc_config.o)
-                0x0000000003ffac88                _disint_table
-                0x0000000003ffac98                _lock_flag
-                0x0000000003ffac9c                _intnest
-                0x0000000003ffac9e                _saved_imr
-                0x0000000003ffacae                _current_intpri
- *fill*         0x0000000003ffacaf        0x1 
- COMMON         0x0000000003ffacb0       0x9c libkernel.a(task.o)
-                0x0000000003ffacb0                __kernel_p_runtsk
-                0x0000000003ffacb4                __kernel_ipmflg
-                0x0000000003ffacb8                __kernel_p_schedtsk
-                0x0000000003ffacbc                __kernel_ready_primap
-                0x0000000003ffacc0                __kernel_dspflg
-                0x0000000003ffacc4                __kernel_ready_queue
-                0x0000000003ffad44                __kernel_disdsp
-                0x0000000003ffad48                __kernel_reqflg
- COMMON         0x0000000003ffad4c       0x10 libkernel.a(time_event.o)
-                0x0000000003ffad4c                __kernel_min_time
-                0x0000000003ffad50                __kernel_current_time
-                0x0000000003ffad54                __kernel_last_index
-                0x0000000003ffad58                __kernel_next_time
-                0x0000000003ffad5c                . = ALIGN (0x4)
-                0x0000000003ffad5c                __bss_end = .
-
-.sdata          0x0000000003ffad5c        0x0
-                0x0000000004002d5c                PROVIDE (__gp, (. + 0x8000))
+.sdata          0x0000000006ff7000        0x0
+                0x0000000006fff000                PROVIDE (__gp, (. + 0x8000))
  *(.sdata)
 
-.tdata          0x0000000003ffad5c        0x0
-                0x0000000003ffad5c                PROVIDE (__ep, .)
+.bss            0x0000000006ff7000     0x115c load address 0x00000000000096e0
+                0x0000000006ff7000                . = ALIGN (0x4)
+                0x0000000006ff7000                __bss_start = .
+ *(.bss)
+ .bss           0x0000000006ff7000        0x0 start.o
+ .bss           0x0000000006ff7000        0x0 sample1.o
+ .bss           0x0000000006ff7000        0x0 log_output.o
+ .bss           0x0000000006ff7000        0x0 vasyslog.o
+ .bss           0x0000000006ff7000        0x0 t_perror.o
+ .bss           0x0000000006ff7000        0x0 strerror.o
+ .bss           0x0000000006ff7000        0x0 banner.o
+ .bss           0x0000000006ff7000      0x418 syslog.o
+ .bss           0x0000000006ff7418      0x9c0 serial.o
+ .bss           0x0000000006ff7dd8        0x4 logtask.o
+ .bss           0x0000000006ff7ddc        0x0 kernel_cfg.o
+ .bss           0x0000000006ff7ddc        0x0 kernel_cfg_asm.o
+ .bss           0x0000000006ff7ddc        0x0 libkernel.a(v850es_fk3.o)
+ .bss           0x0000000006ff7ddc        0x0 libkernel.a(prc_support.o)
+ .bss           0x0000000006ff7ddc        0x0 libkernel.a(target_config.o)
+ .bss           0x0000000006ff7ddc        0x0 libkernel.a(target_timer.o)
+ .bss           0x0000000006ff7ddc        0x0 libkernel.a(target_serial.o)
+ .bss           0x0000000006ff7ddc       0x75 libkernel.a(prc_config.o)
+ *fill*         0x0000000006ff7e51        0x3 
+ .bss           0x0000000006ff7e54        0x4 libkernel.a(startup.o)
+                0x0000000006ff7e54                __kernel_kerflg
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(task.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(time_event.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(task_manage.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(task_sync.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(task_except.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(semaphore.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(time_manage.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(cyclic.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(alarm.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(sys_manage.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(interrupt.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(exception.o)
+ .bss           0x0000000006ff7e58        0x0 libkernel.a(wait.o)
+ .bss           0x0000000006ff7e58        0x0 /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
+ *(.bss.*)
+ *(COMMON)
+ COMMON         0x0000000006ff7e58        0xc sample1.o
+                0x0000000006ff7e58                _task_loop
+                0x0000000006ff7e5c                _message
+                0x0000000006ff7e60                _tex_loop
+ COMMON         0x0000000006ff7e64      0x184 kernel_cfg.o
+                0x0000000006ff7e64                __kernel_tmevt_heap
+                0x0000000006ff7e9c                __kernel_pdqcb_table
+                0x0000000006ff7e9c                __kernel_dtqcb_table
+                0x0000000006ff7e9c                __kernel_almcb_table
+                0x0000000006ff7eb0                __kernel_dtqinib_table
+                0x0000000006ff7eb0                __kernel_flginib_table
+                0x0000000006ff7eb0                __kernel_pdqinib_table
+                0x0000000006ff7eb0                __kernel_cyccb_table
+                0x0000000006ff7ec8                __kernel_mpfcb_table
+                0x0000000006ff7ec8                __kernel_semcb_table
+                0x0000000006ff7f48                __kernel_mbxinib_table
+                0x0000000006ff7f48                __kernel_mbxcb_table
+                0x0000000006ff7f48                __kernel_mpfinib_table
+                0x0000000006ff7f48                __kernel_tcb_table
+                0x0000000006ff7fe8                __kernel_flgcb_table
+ COMMON         0x0000000006ff7fe8       0xa0 libkernel.a(target_serial.o)
+                0x0000000006ff7fe8                _siopcb_table
+ COMMON         0x0000000006ff8088       0x27 libkernel.a(prc_config.o)
+                0x0000000006ff8088                _disint_table
+                0x0000000006ff8098                _lock_flag
+                0x0000000006ff809c                _intnest
+                0x0000000006ff809e                _saved_imr
+                0x0000000006ff80ae                _current_intpri
+ *fill*         0x0000000006ff80af        0x1 
+ COMMON         0x0000000006ff80b0       0x9c libkernel.a(task.o)
+                0x0000000006ff80b0                __kernel_p_runtsk
+                0x0000000006ff80b4                __kernel_ipmflg
+                0x0000000006ff80b8                __kernel_p_schedtsk
+                0x0000000006ff80bc                __kernel_ready_primap
+                0x0000000006ff80c0                __kernel_dspflg
+                0x0000000006ff80c4                __kernel_ready_queue
+                0x0000000006ff8144                __kernel_disdsp
+                0x0000000006ff8148                __kernel_reqflg
+ COMMON         0x0000000006ff814c       0x10 libkernel.a(time_event.o)
+                0x0000000006ff814c                __kernel_min_time
+                0x0000000006ff8150                __kernel_current_time
+                0x0000000006ff8154                __kernel_last_index
+                0x0000000006ff8158                __kernel_next_time
+                0x0000000006ff815c                . = ALIGN (0x4)
+                0x0000000006ff815c                __bss_end = .
+
+.bss_noclr      0x0000000006ff815c     0x2c00 load address 0x000000000000a83c
+                0x0000000006ff815c                . = ALIGN (0x4)
+ *(.bss_noclr)
+ .bss_noclr     0x0000000006ff815c     0x2c00 kernel_cfg.o
+                0x0000000006ffad5c                . = ALIGN (0x4)
+
+.tdata          0x0000000006ffad5c        0x0
+                0x0000000006ffad5c                PROVIDE (__ep, .)
  *(.tbyte)
  *(.tcommon_byte)
  *(.tdata)
@@ -567,7 +606,7 @@ LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
  .comment       0x0000000000000000       0x1f libkernel.a(interrupt.o)
  .comment       0x0000000000000000       0x1f libkernel.a(exception.o)
  .comment       0x0000000000000000       0x1f libkernel.a(wait.o)
- .comment       0x000000000000001e       0x29 /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
+ .comment       0x000000000000001e       0x29 /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
                                          0x2a (size before relaxing)
 
 .note.renesas   0x0000000000000000       0xc8
@@ -603,7 +642,7 @@ LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
  .note.renesas  0x0000000000000000       0xb4 libkernel.a(interrupt.o)
  .note.renesas  0x0000000000000000       0xb4 libkernel.a(exception.o)
  .note.renesas  0x0000000000000000       0xb4 libkernel.a(wait.o)
- .note.renesas  0x00000000000000b4       0x14 /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
+ .note.renesas  0x00000000000000b4       0x14 /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
                                          0xb4 (size before relaxing)
 
 .debug
@@ -689,73 +728,73 @@ LOAD /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/libgcc.a
  *(.debug_pubnames)
 OUTPUT(asp elf32-v850-rh850)
 
-.debug_line     0x0000000000000000     0x519c
+.debug_line     0x0000000000000000     0x51c2
  .debug_line    0x0000000000000000       0x70 start.o
  .debug_line    0x0000000000000070      0x3ea sample1.o
  .debug_line    0x000000000000045a      0x13d log_output.o
- .debug_line    0x0000000000000597      0x12e vasyslog.o
- .debug_line    0x00000000000006c5       0xb4 t_perror.o
- .debug_line    0x0000000000000779       0x84 strerror.o
- .debug_line    0x00000000000007fd       0x63 banner.o
- .debug_line    0x0000000000000860      0x1b7 syslog.o
- .debug_line    0x0000000000000a17      0x38b serial.o
- .debug_line    0x0000000000000da2      0x13f logtask.o
- .debug_line    0x0000000000000ee1      0x1e7 kernel_cfg.o
- .debug_line    0x00000000000010c8      0x3d0 kernel_cfg_asm.o
- .debug_line    0x0000000000001498       0x62 libkernel.a(v850es_fk3.o)
- .debug_line    0x00000000000014fa      0x1ea libkernel.a(prc_support.o)
- .debug_line    0x00000000000016e4      0x145 libkernel.a(target_config.o)
- .debug_line    0x0000000000001829      0x17c libkernel.a(target_timer.o)
- .debug_line    0x00000000000019a5      0x1c2 libkernel.a(target_serial.o)
- .debug_line    0x0000000000001b67      0x375 libkernel.a(prc_config.o)
- .debug_line    0x0000000000001edc      0x164 libkernel.a(startup.o)
- .debug_line    0x0000000000002040      0x497 libkernel.a(task.o)
- .debug_line    0x00000000000024d7      0x27c libkernel.a(time_event.o)
- .debug_line    0x0000000000002753      0x4f1 libkernel.a(task_manage.o)
- .debug_line    0x0000000000002c44      0x675 libkernel.a(task_sync.o)
- .debug_line    0x00000000000032b9      0x39a libkernel.a(task_except.o)
- .debug_line    0x0000000000003653      0x557 libkernel.a(semaphore.o)
- .debug_line    0x0000000000003baa      0x1c1 libkernel.a(time_manage.o)
- .debug_line    0x0000000000003d6b      0x30c libkernel.a(cyclic.o)
- .debug_line    0x0000000000004077      0x40b libkernel.a(alarm.o)
- .debug_line    0x0000000000004482      0x4ed libkernel.a(sys_manage.o)
- .debug_line    0x000000000000496f      0x2d0 libkernel.a(interrupt.o)
- .debug_line    0x0000000000004c3f      0x117 libkernel.a(exception.o)
- .debug_line    0x0000000000004d56      0x446 libkernel.a(wait.o)
+ .debug_line    0x0000000000000597      0x154 vasyslog.o
+ .debug_line    0x00000000000006eb       0xb4 t_perror.o
+ .debug_line    0x000000000000079f       0x84 strerror.o
+ .debug_line    0x0000000000000823       0x63 banner.o
+ .debug_line    0x0000000000000886      0x1b7 syslog.o
+ .debug_line    0x0000000000000a3d      0x38b serial.o
+ .debug_line    0x0000000000000dc8      0x13f logtask.o
+ .debug_line    0x0000000000000f07      0x1e7 kernel_cfg.o
+ .debug_line    0x00000000000010ee      0x3d0 kernel_cfg_asm.o
+ .debug_line    0x00000000000014be       0x62 libkernel.a(v850es_fk3.o)
+ .debug_line    0x0000000000001520      0x1ea libkernel.a(prc_support.o)
+ .debug_line    0x000000000000170a      0x145 libkernel.a(target_config.o)
+ .debug_line    0x000000000000184f      0x17c libkernel.a(target_timer.o)
+ .debug_line    0x00000000000019cb      0x1c2 libkernel.a(target_serial.o)
+ .debug_line    0x0000000000001b8d      0x375 libkernel.a(prc_config.o)
+ .debug_line    0x0000000000001f02      0x164 libkernel.a(startup.o)
+ .debug_line    0x0000000000002066      0x497 libkernel.a(task.o)
+ .debug_line    0x00000000000024fd      0x27c libkernel.a(time_event.o)
+ .debug_line    0x0000000000002779      0x4f1 libkernel.a(task_manage.o)
+ .debug_line    0x0000000000002c6a      0x675 libkernel.a(task_sync.o)
+ .debug_line    0x00000000000032df      0x39a libkernel.a(task_except.o)
+ .debug_line    0x0000000000003679      0x557 libkernel.a(semaphore.o)
+ .debug_line    0x0000000000003bd0      0x1c1 libkernel.a(time_manage.o)
+ .debug_line    0x0000000000003d91      0x30c libkernel.a(cyclic.o)
+ .debug_line    0x000000000000409d      0x40b libkernel.a(alarm.o)
+ .debug_line    0x00000000000044a8      0x4ed libkernel.a(sys_manage.o)
+ .debug_line    0x0000000000004995      0x2d0 libkernel.a(interrupt.o)
+ .debug_line    0x0000000000004c65      0x117 libkernel.a(exception.o)
+ .debug_line    0x0000000000004d7c      0x446 libkernel.a(wait.o)
 
-.debug_info     0x0000000000000000    0x13d4a
- .debug_info    0x0000000000000000       0x78 start.o
- .debug_info    0x0000000000000078     0x23f7 sample1.o
- .debug_info    0x000000000000246f      0x4cb log_output.o
- .debug_info    0x000000000000293a      0x1f2 vasyslog.o
- .debug_info    0x0000000000002b2c      0x2ab t_perror.o
- .debug_info    0x0000000000002dd7       0xd5 strerror.o
- .debug_info    0x0000000000002eac       0xd7 banner.o
- .debug_info    0x0000000000002f83      0x6b9 syslog.o
- .debug_info    0x000000000000363c      0xddd serial.o
- .debug_info    0x0000000000004419      0x5a4 logtask.o
- .debug_info    0x00000000000049bd     0x11b9 kernel_cfg.o
- .debug_info    0x0000000000005b76       0x70 kernel_cfg_asm.o
- .debug_info    0x0000000000005be6       0x7d libkernel.a(v850es_fk3.o)
- .debug_info    0x0000000000005c63       0x7e libkernel.a(prc_support.o)
- .debug_info    0x0000000000005ce1      0x4d4 libkernel.a(target_config.o)
- .debug_info    0x00000000000061b5      0x662 libkernel.a(target_timer.o)
- .debug_info    0x0000000000006817      0x6e0 libkernel.a(target_serial.o)
- .debug_info    0x0000000000006ef7      0xaaf libkernel.a(prc_config.o)
- .debug_info    0x00000000000079a6      0x475 libkernel.a(startup.o)
- .debug_info    0x0000000000007e1b     0x11ec libkernel.a(task.o)
- .debug_info    0x0000000000009007      0x7ca libkernel.a(time_event.o)
- .debug_info    0x00000000000097d1     0x12b6 libkernel.a(task_manage.o)
- .debug_info    0x000000000000aa87     0x1651 libkernel.a(task_sync.o)
- .debug_info    0x000000000000c0d8      0xcc2 libkernel.a(task_except.o)
- .debug_info    0x000000000000cd9a     0x1665 libkernel.a(semaphore.o)
- .debug_info    0x000000000000e3ff      0x5ff libkernel.a(time_manage.o)
- .debug_info    0x000000000000e9fe      0xc15 libkernel.a(cyclic.o)
- .debug_info    0x000000000000f613      0xf1e libkernel.a(alarm.o)
- .debug_info    0x0000000000010531     0x1287 libkernel.a(sys_manage.o)
- .debug_info    0x00000000000117b8      0xcc2 libkernel.a(interrupt.o)
- .debug_info    0x000000000001247a      0x540 libkernel.a(exception.o)
- .debug_info    0x00000000000129ba     0x1390 libkernel.a(wait.o)
+.debug_info     0x0000000000000000    0x13d36
+ .debug_info    0x0000000000000000       0x73 start.o
+ .debug_info    0x0000000000000073     0x23f7 sample1.o
+ .debug_info    0x000000000000246a      0x4cb log_output.o
+ .debug_info    0x0000000000002935      0x1f2 vasyslog.o
+ .debug_info    0x0000000000002b27      0x2ab t_perror.o
+ .debug_info    0x0000000000002dd2       0xd5 strerror.o
+ .debug_info    0x0000000000002ea7       0xd7 banner.o
+ .debug_info    0x0000000000002f7e      0x6b9 syslog.o
+ .debug_info    0x0000000000003637      0xddd serial.o
+ .debug_info    0x0000000000004414      0x5a4 logtask.o
+ .debug_info    0x00000000000049b8     0x11b9 kernel_cfg.o
+ .debug_info    0x0000000000005b71       0x6b kernel_cfg_asm.o
+ .debug_info    0x0000000000005bdc       0x78 libkernel.a(v850es_fk3.o)
+ .debug_info    0x0000000000005c54       0x79 libkernel.a(prc_support.o)
+ .debug_info    0x0000000000005ccd      0x4d4 libkernel.a(target_config.o)
+ .debug_info    0x00000000000061a1      0x662 libkernel.a(target_timer.o)
+ .debug_info    0x0000000000006803      0x6e0 libkernel.a(target_serial.o)
+ .debug_info    0x0000000000006ee3      0xaaf libkernel.a(prc_config.o)
+ .debug_info    0x0000000000007992      0x475 libkernel.a(startup.o)
+ .debug_info    0x0000000000007e07     0x11ec libkernel.a(task.o)
+ .debug_info    0x0000000000008ff3      0x7ca libkernel.a(time_event.o)
+ .debug_info    0x00000000000097bd     0x12b6 libkernel.a(task_manage.o)
+ .debug_info    0x000000000000aa73     0x1651 libkernel.a(task_sync.o)
+ .debug_info    0x000000000000c0c4      0xcc2 libkernel.a(task_except.o)
+ .debug_info    0x000000000000cd86     0x1665 libkernel.a(semaphore.o)
+ .debug_info    0x000000000000e3eb      0x5ff libkernel.a(time_manage.o)
+ .debug_info    0x000000000000e9ea      0xc15 libkernel.a(cyclic.o)
+ .debug_info    0x000000000000f5ff      0xf1e libkernel.a(alarm.o)
+ .debug_info    0x000000000001051d     0x1287 libkernel.a(sys_manage.o)
+ .debug_info    0x00000000000117a4      0xcc2 libkernel.a(interrupt.o)
+ .debug_info    0x0000000000012466      0x540 libkernel.a(exception.o)
+ .debug_info    0x00000000000129a6     0x1390 libkernel.a(wait.o)
 
 .debug_abbrev   0x0000000000000000     0x4709
  .debug_abbrev  0x0000000000000000       0x14 start.o
@@ -820,7 +859,7 @@ OUTPUT(asp elf32-v850-rh850)
  .debug_frame   0x0000000000000ca0       0x70 libkernel.a(interrupt.o)
  .debug_frame   0x0000000000000d10       0x30 libkernel.a(exception.o)
  .debug_frame   0x0000000000000d40       0xc0 libkernel.a(wait.o)
- .debug_frame   0x0000000000000e00       0x20 /usr/local/athrill-gcc/lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
+ .debug_frame   0x0000000000000e00       0x20 /mnt/c/project/oss/athrill-gcc-package/usr/local/athrill-gcc/bin/../lib/gcc/v850-elf/4.9-GNUV850_v14.01/../../../../v850-elf/lib/libc.a(lib_a-memcpy.o)
 
 .debug_loc      0x0000000000000000     0x8c5d
  .debug_loc     0x0000000000000000     0x19dd sample1.o
@@ -868,60 +907,60 @@ OUTPUT(asp elf32-v850-rh850)
  .debug_ranges  0x0000000000000b20       0x30 libkernel.a(exception.o)
  .debug_ranges  0x0000000000000b50      0x248 libkernel.a(wait.o)
 
-.debug_str      0x0000000000000000     0x2168
- .debug_str     0x0000000000000000      0x2e8 sample1.o
-                                        0x398 (size before relaxing)
- .debug_str     0x00000000000002e8       0xb3 log_output.o
-                                        0x20f (size before relaxing)
- .debug_str     0x000000000000039b       0x3d vasyslog.o
-                                        0x1cb (size before relaxing)
- .debug_str     0x00000000000003d8       0x2f t_perror.o
-                                        0x1e0 (size before relaxing)
- .debug_str     0x0000000000000407       0x16 strerror.o
-                                        0x141 (size before relaxing)
- .debug_str     0x000000000000041d       0x20 banner.o
-                                        0x149 (size before relaxing)
- .debug_str     0x000000000000043d      0x142 syslog.o
-                                        0x2e8 (size before relaxing)
- .debug_str     0x000000000000057f      0x35b serial.o
-                                        0x4f2 (size before relaxing)
- .debug_str     0x00000000000008da       0x6e logtask.o
-                                        0x2b3 (size before relaxing)
- .debug_str     0x0000000000000948      0xb19 kernel_cfg.o
-                                        0xd82 (size before relaxing)
- .debug_str     0x0000000000001461       0xea libkernel.a(target_config.o)
-                                        0x267 (size before relaxing)
- .debug_str     0x000000000000154b       0xac libkernel.a(target_timer.o)
-                                        0x2dc (size before relaxing)
- .debug_str     0x00000000000015f7       0xb8 libkernel.a(target_serial.o)
-                                        0x30f (size before relaxing)
- .debug_str     0x00000000000016af       0xec libkernel.a(prc_config.o)
-                                        0x3cb (size before relaxing)
- .debug_str     0x000000000000179b       0x78 libkernel.a(startup.o)
+.debug_str      0x0000000000000000     0x2163
+ .debug_str     0x0000000000000000      0x2e3 sample1.o
+                                        0x393 (size before relaxing)
+ .debug_str     0x00000000000002e3       0xb3 log_output.o
+                                        0x20a (size before relaxing)
+ .debug_str     0x0000000000000396       0x3d vasyslog.o
+                                        0x1c6 (size before relaxing)
+ .debug_str     0x00000000000003d3       0x2f t_perror.o
+                                        0x1db (size before relaxing)
+ .debug_str     0x0000000000000402       0x16 strerror.o
+                                        0x13c (size before relaxing)
+ .debug_str     0x0000000000000418       0x20 banner.o
+                                        0x144 (size before relaxing)
+ .debug_str     0x0000000000000438      0x142 syslog.o
+                                        0x2e3 (size before relaxing)
+ .debug_str     0x000000000000057a      0x35b serial.o
+                                        0x4ed (size before relaxing)
+ .debug_str     0x00000000000008d5       0x6e logtask.o
+                                        0x2ae (size before relaxing)
+ .debug_str     0x0000000000000943      0xb19 kernel_cfg.o
+                                        0xd7d (size before relaxing)
+ .debug_str     0x000000000000145c       0xea libkernel.a(target_config.o)
+                                        0x262 (size before relaxing)
+ .debug_str     0x0000000000001546       0xac libkernel.a(target_timer.o)
+                                        0x2d7 (size before relaxing)
+ .debug_str     0x00000000000015f2       0xb8 libkernel.a(target_serial.o)
+                                        0x30a (size before relaxing)
+ .debug_str     0x00000000000016aa       0xec libkernel.a(prc_config.o)
+                                        0x3c6 (size before relaxing)
+ .debug_str     0x0000000000001796       0x78 libkernel.a(startup.o)
+                                        0x32b (size before relaxing)
+ .debug_str     0x000000000000180e      0x340 libkernel.a(task.o)
+                                        0x7a7 (size before relaxing)
+ .debug_str     0x0000000000001b4e       0xcb libkernel.a(time_event.o)
+                                        0x40f (size before relaxing)
+ .debug_str     0x0000000000001c19       0x89 libkernel.a(task_manage.o)
+                                        0x5b2 (size before relaxing)
+ .debug_str     0x0000000000001ca2       0x92 libkernel.a(task_sync.o)
+                                        0x5c8 (size before relaxing)
+ .debug_str     0x0000000000001d34       0x5f libkernel.a(task_except.o)
+                                        0x4b6 (size before relaxing)
+ .debug_str     0x0000000000001d93       0xf9 libkernel.a(semaphore.o)
+                                        0x768 (size before relaxing)
+ .debug_str     0x0000000000001e8c       0x83 libkernel.a(time_manage.o)
                                         0x330 (size before relaxing)
- .debug_str     0x0000000000001813      0x340 libkernel.a(task.o)
-                                        0x7ac (size before relaxing)
- .debug_str     0x0000000000001b53       0xcb libkernel.a(time_event.o)
-                                        0x414 (size before relaxing)
- .debug_str     0x0000000000001c1e       0x89 libkernel.a(task_manage.o)
-                                        0x5b7 (size before relaxing)
- .debug_str     0x0000000000001ca7       0x92 libkernel.a(task_sync.o)
-                                        0x5cd (size before relaxing)
- .debug_str     0x0000000000001d39       0x5f libkernel.a(task_except.o)
-                                        0x4bb (size before relaxing)
- .debug_str     0x0000000000001d98       0xf9 libkernel.a(semaphore.o)
-                                        0x76d (size before relaxing)
- .debug_str     0x0000000000001e91       0x83 libkernel.a(time_manage.o)
-                                        0x335 (size before relaxing)
- .debug_str     0x0000000000001f14       0x92 libkernel.a(cyclic.o)
-                                        0x47f (size before relaxing)
- .debug_str     0x0000000000001fa6       0x6d libkernel.a(alarm.o)
-                                        0x4c9 (size before relaxing)
- .debug_str     0x0000000000002013       0x42 libkernel.a(sys_manage.o)
-                                        0x51f (size before relaxing)
- .debug_str     0x0000000000002055       0x42 libkernel.a(interrupt.o)
-                                        0x5c2 (size before relaxing)
- .debug_str     0x0000000000002097       0x6a libkernel.a(exception.o)
-                                        0x3cf (size before relaxing)
- .debug_str     0x0000000000002101       0x67 libkernel.a(wait.o)
-                                        0x70f (size before relaxing)
+ .debug_str     0x0000000000001f0f       0x92 libkernel.a(cyclic.o)
+                                        0x47a (size before relaxing)
+ .debug_str     0x0000000000001fa1       0x6d libkernel.a(alarm.o)
+                                        0x4c4 (size before relaxing)
+ .debug_str     0x000000000000200e       0x42 libkernel.a(sys_manage.o)
+                                        0x51a (size before relaxing)
+ .debug_str     0x0000000000002050       0x42 libkernel.a(interrupt.o)
+                                        0x5bd (size before relaxing)
+ .debug_str     0x0000000000002092       0x6a libkernel.a(exception.o)
+                                        0x3ca (size before relaxing)
+ .debug_str     0x00000000000020fc       0x67 libkernel.a(wait.o)
+                                        0x70a (size before relaxing)
