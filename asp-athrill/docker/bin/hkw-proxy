@@ -7,8 +7,10 @@ else
 	echo "ERROR: can not find proxy_param.json"
 	exit 1
 fi
+export IFCONFIG_IPADDR=`ifconfig | grep -A 1 eth0 | grep inet | awk '{print $2}'`
+export RESOLVE_IPADDR=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'`
+mo /root/workspace/bin/template/device_config_udp_txt.mo > device_config.txt
 
-RESOLVE_IPADDR=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'`
 while [ 1 ]
 do
         echo "############ START CONNECT #################"
