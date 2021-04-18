@@ -7,8 +7,18 @@ else
 	echo "ERROR: can not find proxy_param.json"
 	exit 1
 fi
+if [ -f ./port.bash ]
+then
+	:
+else
+	echo "ERROR: can not find port.bash"
+	exit 1
+fi
+
 export IFCONFIG_IPADDR=`ifconfig | grep -A 1 eth0 | grep inet | awk '{print $2}'`
 export RESOLVE_IPADDR=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'`
+
+source ./port.bash
 mo /root/workspace/bin/template/device_config_udp_txt.mo > device_config.txt
 
 while [ 1 ]
